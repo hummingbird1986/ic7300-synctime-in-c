@@ -16,17 +16,8 @@
 #define TIME_RW2 95
 */
 
-
 int main(void){
 
-unsigned char CMD_START=0xFE;
-unsigned char CMD_END=0xFD;
-unsigned char RIG_ADDR=0x94;
-unsigned char CONTROL_ADDR=0xE0;
-unsigned char MAIN_CMD=0x1A;
-unsigned char SUB_CMD=0x05;
-unsigned char TIME_RW1=0x00;
-unsigned char TIME_RW2=0x95;
 
 int serial_port = open("/dev/ttyUSB0", O_RDWR);
 struct termios tty;
@@ -65,7 +56,9 @@ if(tcgetattr(serial_port, &tty) != 0) {
       return 1;
   }
 
-unsigned char msg[]={/*CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, 0X14,0x14, CMD_END*/ '\xFE', '\xFE', '\x94', '\xE0', '\x1A', '\x05', '\x00', '\x95', '\x14', '\x14', '\xFD'};
+char msg[]={ '\xFE', '\xFE', '\x94', '\xE0', '\x1A', '\x05', '\x00', '\x95'/*, '\x14', '\x14'*/};
+char msg1[]={'\x14', '\x14', '\xFD'};
+strcat(msg, msg1);
 //unsigned char buff[sizeof(msg)];
 //sprintf (buff,"%02lX",sizeof(msg));
 write(serial_port,  msg, sizeof(msg));
