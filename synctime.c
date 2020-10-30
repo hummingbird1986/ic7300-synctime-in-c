@@ -5,19 +5,22 @@
 #include <errno.h>
 #include <termios.h>
 #include <unistd.h>
-/*
-#define CMD_START FE
-#define CMD_END FD
-#define RIG_ADDR 94
-#define CONTROL_ADDR E0
-#define MAIN_CMD 1A
-#define SUB_CMD 05
-#define TIME_RW1 00
-#define TIME_RW2 95
-*/
+
+#define CMD_START '\xFE'
+#define CMD_END '\xFD'
+#define RIG_ADDR '\x94'
+#define CONTROL_ADDR '\xE0'
+#define MAIN_CMD '\x1A'
+#define SUB_CMD '\x05'
+#define TIME_RW1 '\x00'
+#define TIME_RW2 '\x95'
+//#define HOUR '\x14'
+//#define MIN '\x14'	
 
 int main(void){
 
+unsigned char HOUR[24]={'\x00', '\x01', '\x02','\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x09', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x20', '\x21', '\x22', '\x23'};
+unsigned char MIN[60]={'\x00', '\x01', '\x02','\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x09', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x20', '\x21', '\x22', '\x23', '\x24', '\x25', '\x26', '\x27', '\x28', '\x29', '\x30', '\x31', '\x32', '\x33', '\x34', '\x35', '\x36', '\x37', '\x38', '\x39', '\x40', '\x41', '\x42', '\x43', '\x44', '\x45', '\x46', '\x47', '\x48', '\x49', '\x50', '\x51', '\x52', '\x53', '\x54', '\x55', '\x56', '\x57', '\x58', '\x59' };
 
 int serial_port = open("/dev/ttyUSB0", O_RDWR);
 struct termios tty;
@@ -43,7 +46,7 @@ if(tcgetattr(serial_port, &tty) != 0) {
   tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
   tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
   tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-   tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+  tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
   tty.c_cc[VMIN] = 0;
 
   // Set in/out baud rate to be 9600
@@ -56,17 +59,14 @@ if(tcgetattr(serial_port, &tty) != 0) {
       return 1;
   }
 
-char msg[100]={ '\xFE', '\xFE', '\x94', '\xE0', '\x1A', '\x05', '\x00', '\x95', '\x14', '\x14', '\xFD'};
-//char msg1[]={'\x14', '\x14', '\xFD'};
-//strcat(msg, msg1);
-//sprintf (buff,"%02lX",sizeof(msg));
-write(serial_port,  msg, sizeof(msg));
-//printf("write output %ls", msg);
-/*  struct tm *ptr;
+  struct tm *ptr;
   time_t epochTime;
   epochTime=time(NULL);
   ptr=localtime(&epochTime);
-  return 0;
-  */
+  
+
+unsigned char msg[100]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, HOUR[(ptr->tm_hour)], MIN[(ptr->tm_min)] /*MIN*/, CMD_END};
+
+write(serial_port,  msg, sizeof(msg));
 close(serial_port);
 } 
