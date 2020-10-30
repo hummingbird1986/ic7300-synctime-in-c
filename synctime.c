@@ -5,22 +5,30 @@
 #include <errno.h>
 #include <termios.h>
 #include <unistd.h>
-
-#define CMD_START 0xFE
-#define CMD_END 0xFD
-#define RIG_ADDR 0x94
-#define CONTROL_ADDR 0xE0
-#define MAIN_CMD 0x1A
-#define SUB_CMD 0x05
-#define TIME_RW1 0x00
-#define TIME_RW2 0x95
-
-
+/*
+#define CMD_START FE
+#define CMD_END FD
+#define RIG_ADDR 94
+#define CONTROL_ADDR E0
+#define MAIN_CMD 1A
+#define SUB_CMD 05
+#define TIME_RW1 00
+#define TIME_RW2 95
+*/
 
 
 int main(void){
 
-int serial_port = open("/dev/cu.xxxx", O_RDWR);
+unsigned char CMD_START=0xFE;
+unsigned char CMD_END=0xFD;
+unsigned char RIG_ADDR=0x94;
+unsigned char CONTROL_ADDR=0xE0;
+unsigned char MAIN_CMD=0x1A;
+unsigned char SUB_CMD=0x05;
+unsigned char TIME_RW1=0x00;
+unsigned char TIME_RW2=0x95;
+
+int serial_port = open("/dev/ttyUSB0", O_RDWR);
 struct termios tty;
 
 if(tcgetattr(serial_port, &tty) != 0) {
@@ -57,9 +65,16 @@ if(tcgetattr(serial_port, &tty) != 0) {
       return 1;
   }
 
-  struct tm *ptr;
+unsigned char msg[]={/*CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, 0X14,0x14, CMD_END*/ '\xFE', '\xFE', '\x94', '\xE0', '\x1A', '\x05', '\x00', '\x95', '\x14', '\x14', '\xFD'};
+//unsigned char buff[sizeof(msg)];
+//sprintf (buff,"%02lX",sizeof(msg));
+write(serial_port,  msg, sizeof(msg));
+//printf("write output %ls", msg);
+/*  struct tm *ptr;
   time_t epochTime;
   epochTime=time(NULL);
   ptr=localtime(&epochTime);
   return 0;
- }
+  */
+close(serial_port);
+} 
