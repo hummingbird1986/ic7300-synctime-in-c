@@ -56,16 +56,9 @@ if(tcgetattr(serial_port, &tty) != 0) {
       return 1;
   }
 
-<<<<<<< HEAD
 char msg[100]={ '\xFE', '\xFE', '\x94', '\xE0', '\x1A', '\x05', '\x00', '\x95', '\x14', '\x14', '\xFD'};
 //char msg1[]={'\x14', '\x14', '\xFD'};
 //strcat(msg, msg1);
-=======
-char msg[]={ '\xFE', '\xFE', '\x94', '\xE0', '\x1A', '\x05', '\x00', '\x95'/*, '\x14', '\x14'*/};
-char msg1[]={'\x14', '\x14', '\xFD'};
-strcat(msg, msg1);
->>>>>>> 32ca3a17d4d300c49461f9b29dd53fe0b593f2bf
-//unsigned char buff[sizeof(msg)];
 //sprintf (buff,"%02lX",sizeof(msg));
 write(serial_port,  msg, sizeof(msg));
 //printf("write output %ls", msg);
