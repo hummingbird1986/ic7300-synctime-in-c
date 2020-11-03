@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <termios.h>
 #include <unistd.h>
+#include "hr_min.h"
 
 #define CMD_START '\xFE'
 #define CMD_END '\xFD'
@@ -18,10 +19,10 @@
 //#define MIN '\x14'	
 
 int main(void){
-
+/*
 unsigned char HOUR[24]={'\x00', '\x01', '\x02','\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x09', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x20', '\x21', '\x22', '\x23'};
 unsigned char MIN[60]={'\x00', '\x01', '\x02','\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x09', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x20', '\x21', '\x22', '\x23', '\x24', '\x25', '\x26', '\x27', '\x28', '\x29', '\x30', '\x31', '\x32', '\x33', '\x34', '\x35', '\x36', '\x37', '\x38', '\x39', '\x40', '\x41', '\x42', '\x43', '\x44', '\x45', '\x46', '\x47', '\x48', '\x49', '\x50', '\x51', '\x52', '\x53', '\x54', '\x55', '\x56', '\x57', '\x58', '\x59' };
-
+*/
 int serial_port = open("/dev/ttyUSB0", O_RDWR);
 struct termios tty;
 
@@ -63,9 +64,12 @@ if(tcgetattr(serial_port, &tty) != 0) {
   time_t epochTime;
   epochTime=time(NULL);
   ptr=localtime(&epochTime);
-  
+ 
+hr_min( &(ptr->tm_hour),&(ptr->tm_min));
+unsigned char HOUR=ptr->tm_hour;
+unsigned char MIN=ptr->tm_min;
 
-unsigned char msg[100]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, HOUR[(ptr->tm_hour)], MIN[(ptr->tm_min)] /*MIN*/, CMD_END};
+unsigned char msg[100]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, HOUR/*[(ptr->tm_hour)]*/, MIN/*[(ptr->tm_min)]*/ , CMD_END};
 
 write(serial_port,  msg, sizeof(msg));
 close(serial_port);
