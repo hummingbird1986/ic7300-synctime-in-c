@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
-#include <fcntl.h>
-#include <errno.h>
+//#include <fcntl.h>
+//#include <errno.h>
 #include <termios.h>
 #include <unistd.h>
+#include "serial_config.h"
 #include "hr_min.h"
 
 #define CMD_START '\xFE'
@@ -30,7 +31,10 @@ hr_min( &(ptr->tm_hour),&(ptr->tm_min));
 unsigned char HOUR=ptr->tm_hour;
 unsigned char MIN=ptr->tm_min;
 unsigned char msg[100]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, HOUR, MIN, CMD_END};
-
+int serial_port;
+speed_t baud=B9600;	
+serial_config(serial_port, baud);
+/*
 int serial_port = open("/dev/ttyUSB0", O_RDWR);
 struct termios tty;
 
@@ -66,7 +70,7 @@ if(tcgetattr(serial_port, &tty) != 0) {
   if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
       printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
       return 1;
-  }
+  }*/
 /*
 struct tm *ptr;
 time_t epochTime;
