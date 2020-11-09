@@ -5,11 +5,11 @@
 #include <fcntl.h>
 #include <string.h>
 
-int serial_config(int fd, speed_t baud_rate){
-fd = open("/dev/ttyUSB0", O_RDWR);
+int serial_config(int *fd, speed_t baud_rate){
+*fd = open("/dev/ttyUSB0", O_RDWR);
 struct termios tty;
 
-if(tcgetattr(fd, &tty) != 0) {
+if(tcgetattr(*fd, &tty) != 0) {
 
   printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
   return 1;
@@ -38,7 +38,7 @@ if(tcgetattr(fd, &tty) != 0) {
   cfsetospeed(&tty, baud_rate);
 
   // Save tty settings, also checking for error
-  if (tcsetattr(fd, TCSANOW, &tty) != 0) {
+  if (tcsetattr(*fd, TCSANOW, &tty) != 0) {
       printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
       return 1;
   }
