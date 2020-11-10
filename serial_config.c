@@ -6,7 +6,7 @@
 #include <string.h>
 
 int serial_config(int *fd, speed_t baud_rate){
-*fd = open("/dev/ttyUSB0", O_RDWR);
+*fd = open("/dev/cu.SLAB_USBtoUART", O_RDWR);
 struct termios tty;
 
 if(tcgetattr(*fd, &tty) != 0) {
