@@ -23,6 +23,8 @@ struct tm *ptr;
 time_t epochTime;
 while((ptr->tm_sec)!=0)
 { 
+printf("It's syncing the time.....please wait util the seconds tick to zero.\n");
+do{ 
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
 	}
