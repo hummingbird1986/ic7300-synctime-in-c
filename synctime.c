@@ -17,13 +17,10 @@
 #define TIME_RW2 '\x95'
 
 int main(void){
-printf("It's syncing the time.....please wait util the seconds tick to zero.");
+printf("It's syncing the time.....please wait util the seconds tick to zero.\n");
 struct tm *ptr;
 time_t epochTime;
-while((ptr->tm_sec)!=0)
-{ 
-printf("It's syncing the time.....please wait util the seconds tick to zero.\n");
-do{ 
+while((ptr->tm_sec)!=0){
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
 	}
