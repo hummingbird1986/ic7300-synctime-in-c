@@ -1,8 +1,7 @@
+//
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
-//#include <fcntl.h>
-//#include <errno.h>
 #include <termios.h>
 #include <unistd.h>
 #include "serial_config.h"
@@ -18,14 +17,16 @@
 #define TIME_RW2 '\x95'
 
 int main(void){
+printf("It's syncing the time.....please wait util the seconds tick to zero.");
 struct tm *ptr;
 time_t epochTime;
+while((ptr->tm_sec)!=0)
+{ 
 printf("It's syncing the time.....please wait util the seconds tick to zero.\n");
 do{ 
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
-	}while((ptr->tm_sec)!=0);
-
+	}
 hr_min( &(ptr->tm_hour),&(ptr->tm_min));
 unsigned char HOUR=ptr->tm_hour;
 unsigned char MIN=ptr->tm_min;
