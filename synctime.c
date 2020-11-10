@@ -20,7 +20,7 @@
 int main(void){
 struct tm *ptr;
 time_t epochTime;
-printf("It's syncing the time.....please wait util the seconds tick to zero.");
+printf("It's syncing the time.....please wait util the seconds tick to zero.\n");
 do{ 
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
