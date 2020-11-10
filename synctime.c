@@ -26,7 +26,7 @@ while((ptr->tm_sec)!=0){
 hr_min( &(ptr->tm_hour),&(ptr->tm_min));
 unsigned char HOUR=ptr->tm_hour;
 unsigned char MIN=ptr->tm_min;
-unsigned char msg[20]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, HOUR, MIN, CMD_END};
+unsigned char msg[]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, HOUR, MIN, CMD_END};
 int serial_port;
 speed_t baud=B9600;	
 serial_config(&serial_port, baud);
