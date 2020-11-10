@@ -18,14 +18,14 @@
 #define TIME_RW2 '\x95'
 
 int main(void){
+printf("It's syncing the time.....please wait util the seconds tick to zero.");
 struct tm *ptr;
 time_t epochTime;
-printf("It's syncing the time.....please wait util the seconds tick to zero.");
-do{ 
+while((ptr->tm_sec)!=0)
+{ 
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
-	}while((ptr->tm_sec)!=0);
-
+	}
 hr_min( &(ptr->tm_hour),&(ptr->tm_min));
 unsigned char HOUR=ptr->tm_hour;
 unsigned char MIN=ptr->tm_min;
