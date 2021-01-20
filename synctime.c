@@ -24,9 +24,8 @@ while((ptr->tm_sec)!=0){
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
 	}
-int YEAR=ptr->tm_year+1;
+int YEAR=ptr->tm_year;
 YEAR=YEAR%100;
-printf("%d\n", YEAR);
 int Month;
 Month=(ptr->tm_mon)+1;
 NumToHex(&YEAR, &Month, &(ptr->tm_mday), &(ptr->tm_hour),&(ptr->tm_min));
