@@ -24,26 +24,17 @@ while((ptr->tm_sec)!=0){
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
 	}
-printf("%d\n", ptr->tm_mon);
-printf("%d\n", ptr->tm_mday);
-printf("%d\n", ptr->tm_year);
-int Year_two_digit=ptr->tm_year;
-int YEAR;
-YEAR=Year_two_digit%100;
+int YEAR=ptr->tm_year+1;
+YEAR=YEAR%100;
 printf("%d\n", YEAR);
 int Month;
 Month=(ptr->tm_mon)+1;
-NumToHex(&Month, &(ptr->tm_mday), &(ptr->tm_hour),&(ptr->tm_min));
-
+NumToHex(&YEAR, &Month, &(ptr->tm_mday), &(ptr->tm_hour),&(ptr->tm_min));
 unsigned char MON=(Month);
-printf("%u\n", MON);
 unsigned char DATE=ptr->tm_mday;
-printf("%u\n", DATE);
 unsigned char HOUR=ptr->tm_hour;
 unsigned char MIN=ptr->tm_min;
-printf("%u\n", HOUR);
-printf("%u\n", MIN);
-unsigned char msg0[13]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD2, YEAR_20XX, '\x21', MON, DATE, CMD_END};
+unsigned char msg0[13]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD2, YEAR_20XX, YEAR, MON, DATE, CMD_END};
 unsigned char msg1[12]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD3, HOUR, MIN, CMD_END};
 int serial_port;
 speed_t baud=B9600;	
