@@ -15,7 +15,7 @@
 #define SUB_CMD1 '\x00'
 #define SUB_CMD2 '\x94'
 #define SUB_CMD3 '\x95'
-
+#define YEAR_20XX '\x20'
 int main(void){
 printf("It's syncing the time.....please wait util the seconds tick to zero.\n");
 struct tm *ptr;
@@ -24,17 +24,26 @@ while((ptr->tm_sec)!=0){
 	epochTime=time(NULL);
 	ptr=localtime(&epochTime);
 	}
-NumToHex(&(ptr->tm_mon), &(ptr->tm_mday), &(ptr->tm_hour),&(ptr->tm_min));
-unsigned char MON=ptr->tm_mon;
+printf("%d\n", ptr->tm_mon);
+printf("%d\n", ptr->tm_mday);
+int Month;
+Month=(ptr->tm_mon)+1;
+NumToHex(&Month, &(ptr->tm_mday), &(ptr->tm_hour),&(ptr->tm_min));
+
+unsigned char MON=(Month);
+printf("%u\n", MON);
 unsigned char DATE=ptr->tm_mday;
+printf("%u\n", DATE);
 unsigned char HOUR=ptr->tm_hour;
 unsigned char MIN=ptr->tm_min;
-unsigned char msg0[20]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD2, MON, DATE, CMD_END};
-unsigned char msg1[20]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD3, HOUR, MIN, CMD_END};
+printf("%u\n", HOUR);
+printf("%u\n", MIN);
+unsigned char msg0[13]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD2, YEAR_20XX, '\x21', MON, DATE, CMD_END};
+unsigned char msg1[12]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD3, HOUR, MIN, CMD_END};
 int serial_port;
 speed_t baud=B9600;	
 serial_config(&serial_port, baud);
-write(serial_port,  msg0, sizeof(msg0));
+write(serial_port, msg0, sizeof(msg0));
 write(serial_port, msg1, sizeof(msg1));
 close(serial_port);
 } 
