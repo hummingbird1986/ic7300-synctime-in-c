@@ -26,10 +26,11 @@ while((ptr->tm_sec)!=0){
 	}
 printf("%d\n", ptr->tm_mon);
 printf("%d\n", ptr->tm_mday);
+printf("%d\n", ptr->tm_year);
 int Year_two_digit=ptr->tm_year;
 int YEAR;
-YEAR=Year_two_digit%2000;
-printf("%d", Year);
+YEAR=Year_two_digit%100;
+printf("%d\n", YEAR);
 int Month;
 Month=(ptr->tm_mon)+1;
 NumToHex(&Month, &(ptr->tm_mday), &(ptr->tm_hour),&(ptr->tm_min));
