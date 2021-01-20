@@ -29,12 +29,8 @@ unsigned char MON=ptr->tm_mon;
 unsigned char DATE=ptr->tm_mday;
 unsigned char HOUR=ptr->tm_hour;
 unsigned char MIN=ptr->tm_min;
-<<<<<<< HEAD
 unsigned char msg0[20]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD2, MON, DATE, CMD_END};
 unsigned char msg1[20]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD0, SUB_CMD1, SUB_CMD3, HOUR, MIN, CMD_END};
-=======
-unsigned char msg[]={ CMD_START, CMD_START, RIG_ADDR, CONTROL_ADDR, MAIN_CMD, SUB_CMD, TIME_RW1, TIME_RW2, HOUR, MIN, CMD_END};
->>>>>>> d0c622648649dc7359b11787ceef5fd41a568d30
 int serial_port;
 speed_t baud=B9600;	
 serial_config(&serial_port, baud);
